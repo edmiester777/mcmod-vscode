@@ -5,13 +5,18 @@
 
 import * as vscode from 'vscode';
 import UIHelper from '../helpers/ui';
-import UIBase from './base'
+import MCModUIBase from './base'
 
-export default class MCModNodeEditor extends UIBase {
+export default class MCModNodeEditor extends MCModUIBase {
     constructor(context : vscode.ExtensionContext) {
         super(context);
         this.setId("mcmod.nodeeditor");
         this.setTitle("Node Editor");
+        this.addRootMediaSource(UIHelper.moduleRootUri(this.context(), 'vue'));
+        this.addRootMediaSource(UIHelper.moduleRootUri(this.context(), 'rete'));
+        this.addRootMediaSource(UIHelper.moduleRootUri(this.context(), 'rete-vue-render-plugin'));
+        this.addRootMediaSource(UIHelper.moduleRootUri(this.context(), 'rete-connection-plugin'));
+        this.addRootMediaSource(UIHelper.moduleRootUri(this.context(), 'rete-area-plugin'));
         this.addScript(UIHelper.moduleAssetUri(this.context(), 'vue', 'dist', 'vue.min.js'));
         this.addScript(UIHelper.moduleAssetUri(this.context(), 'rete', 'build', 'rete.min.js'));
         this.addScript(UIHelper.moduleAssetUri(this.context(), 'rete-vue-render-plugin', 'build', 'vue-render-plugin.min.js'));
@@ -22,7 +27,7 @@ export default class MCModNodeEditor extends UIBase {
 
     protected bodyContent() : string {
         return `
-        <div id="rete" style="flex: 1 1 auto;"></div>
+        <div id="rete" style="min-height: 100%"></div>
         `;
     }
 }

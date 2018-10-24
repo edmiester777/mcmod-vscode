@@ -1,12 +1,12 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import UIBase from './base';
+import MCModUIBase from './base';
 
 /**
  * The UI implementation for MCMod home.
  */
-export default class MCModHome extends UIBase {
+export default class MCModHome extends MCModUIBase {
     constructor(context : vscode.ExtensionContext) {
         super(context);
         this.setId('mcmod.home');
