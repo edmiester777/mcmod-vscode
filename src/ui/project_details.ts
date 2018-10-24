@@ -4,15 +4,15 @@ import MCModUIBase from './base';
 import * as vscode from 'vscode';
 
 export default class MCModProjectDetailsPage extends MCModUIBase {
-    constructor(context: vscode.ExtensionContext) {
+    private _projectDir : string | null;
+
+    constructor(context: vscode.ExtensionContext, projectDir : string | null = null) {
         super(context);
+        this._projectDir = projectDir;
     }
 
-    protected bodyContent(): string {
-        return `
-        <h1>Start a new project</h1><hr />
-        <input type="text" placeholder="Project Name" />
-        `;
+    protected bodyContent(): {[name: string]: any} {
+        return {};
     }
 
     protected onMessageReceived(message: any): void {}

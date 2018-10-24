@@ -1,7 +1,8 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import UIHelper from '../helpers/ui'
+import UIHelper from '../helpers/ui';
+import * as fs from 'fs';
 
 /**
  * This is the base definition for UI files used in this project.
@@ -14,6 +15,8 @@ export default abstract class MCModUIBase {
     private _mediaRoots : vscode.Uri[];
     private _scripts : vscode.Uri[];
     private _styles : vscode.Uri[];
+    private _template : string | null;
+    private _templateText : string | null;
 
     constructor(context: vscode.ExtensionContext) {
         this._currentPage = null;
@@ -23,6 +26,8 @@ export default abstract class MCModUIBase {
         this._styles = [];
         this._editorId = 'mcmod.unknowntype';
         this._editorTitle = '<Unknown>';
+        this._template = null;
+        this._templateText = null;
 
         this.addRootMediaSource(UIHelper.mediaRootUri(context));
         this.addRootMediaSource(UIHelper.moduleRootUri(context, 'bootstrap'));
@@ -61,6 +66,14 @@ export default abstract class MCModUIBase {
     }
 
     /**
+     * Set the template for this UI.
+     * @param template Name of template to load
+     */
+    public setTemplate(template: string) {
+        this._template = template;
+    }
+
+    /**
      * The title used in tab for this editor.
      * @param title Title for this editor.
      */
@@ -91,6 +104,10 @@ export default abstract class MCModUIBase {
      * Create a panel to be added to the window.
      */
     public async newPanel() : Promise<vscode.WebviewPanel> {
+        if(!this._template) {
+            throw new Error("Template property has not been set.");
+        }
+
         let panel = vscode.window.createWebviewPanel(
             this._editorId,
             this._editorTitle,
@@ -109,7 +126,7 @@ export default abstract class MCModUIBase {
         return this._currentPage;
     }
 
-    private webviewContent() {
+    private webviewContent() : string {
         return `
         <!DOCTYPE HTML>
         <html lang="en">
@@ -123,7 +140,7 @@ export default abstract class MCModUIBase {
             ${this._styles.map(s => `<link rel="stylesheet" href="${s.with({scheme: 'vscode-resource'})}" />`).join('')}
         </head>
         <body>
-            <div class="container-fluid" style="min-height: 100vh; min-width=100vw">${this.bodyContent()}</div>
+            <div class="container-fluid" style="min-height: 100vh; min-width=100vw">${this.stringContent()}</div>
             
             ${this._scripts.map(s => `<script src="${s.with({scheme: 'vscode-resource'})}"></script>`).join('')}
         </body>
@@ -131,6 +148,34 @@ export default abstract class MCModUIBase {
         `;
     }
 
-    protected abstract bodyContent() : string;
+    private loadTemplate() : string {
+        if(!this._template) {
+            throw new Error("Template property has not been set.");
+        }
+        if(this._templateText) {
+            return this._templateText;
+        }
+
+        let uri = UIHelper.mediaUri(this.context(), "templates", (this._template as string) + '.html');
+        this._templateText = fs.readFileSync(uri.fsPath, 'utf8');
+        return this._templateText;
+    }
+
+    private stringContent() : string {
+        let text = this.loadTemplate();
+        let opts = this.bodyContent();
+
+        // replacing properties
+        for(let key in opts) {
+            if(!opts.hasOwnProperty(key)) { continue; }
+            let val = opts[key];
+            let re = new RegExp(`\\\${[\\s]{0,}${key}[\\s]{0,}}`, 'gmi');
+            text = text.replace(re, val);
+        }
+
+        return text;
+    }
+
+    protected abstract bodyContent() : {[name: string]: any};
     protected abstract onMessageReceived(message : any) : void;
 }
