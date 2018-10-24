@@ -1,65 +1,27 @@
-# mcmodcrafter README
+# MCModCrafter #
 
-This is the README for your extension "mcmodcrafter". After writing up a brief description, we recommend including the following sections.
+The MCModCrafter project is designed to help people new to minecraft modding, or
+software engineering in general, to learn how to develop minecraft mods like a
+pro.
 
-## Features
+## What makes this application amazing? ##
+This program helps people learn in three stages:
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+#### Stage 1 - Wizard ####
+The mod wizard is a dynamic UI that allows newbies to develop mods by editing
+predefined fields. This makes a person who has never experienced the
+complexities of developing software to jump right in and experience the magic of
+software development without the massive learning curve.
 
-For example if there is an image subfolder under your extension project workspace:
+#### Stage 2 - Nodal editor ####
+The nodal editor takes generated code from the wizard stage to construct a nodal
+logic editor. A more advanced user may also bypass the wizard phase and jump
+right to the nodal editor. This nodal editor works much like UE4s blueprint
+editor, and allows users to edit logic without knowing everything about java
+code. I feel that this step is crucial to understanding the logic and flow of
+software when first being introduced to the subject.
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+#### Stage 3 - Source editor ####
+Congratulations! They've made it! They learned enough about the inner workings
+of the mod to where they can view and edit generated code by the nodal editor
+stage.
