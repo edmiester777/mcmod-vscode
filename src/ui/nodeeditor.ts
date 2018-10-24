@@ -1,12 +1,12 @@
-/**
- * This is the UI definition for the nodal editor.
- */
 'use strict';
 
 import * as vscode from 'vscode';
 import UIHelper from '../helpers/ui';
-import MCModUIBase from './base'
+import MCModUIBase from './base';
 
+/**
+ * This is the UI definition for the nodal editor.
+ */
 export default class MCModNodeEditor extends MCModUIBase {
     constructor(context : vscode.ExtensionContext) {
         super(context);

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This class is a helper for any mcmod project operations.
  */
