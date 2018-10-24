@@ -27,6 +27,8 @@ export default abstract class MCModUIBase {
         this.addRootMediaSource(UIHelper.mediaRootUri(context));
         this.addRootMediaSource(UIHelper.moduleRootUri(context, 'bootstrap'));
         this.addRootMediaSource(UIHelper.moduleRootUri(context, 'bootswatch'));
+        this.addRootMediaSource(UIHelper.moduleRootUri(context, 'jquery'));
+        this.addScript(UIHelper.moduleAssetUri(context, 'jquery', 'dist', 'jquery.min.js'));
         this.addScript(UIHelper.moduleAssetUri(context, 'bootstrap', 'dist', 'js', 'bootstrap.min.js'));
         
         // adding style based on theme
