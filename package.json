@@ -37,6 +37,8 @@
         "@types/mocha": "^2.2.42"
     },
     "dependencies": {
+        "bootstrap": "^4.1.3",
+        "bootswatch": "^4.1.3",
         "rete": "^1.0.0-alpha.12",
         "rete-area-plugin": "^0.2.0",
         "rete-connection-plugin": "^0.2.1",

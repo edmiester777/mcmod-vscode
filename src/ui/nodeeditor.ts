@@ -30,4 +30,6 @@ export default class MCModNodeEditor extends MCModUIBase {
         <div id="rete" style="min-height: 100%"></div>
         `;
     }
+
+    protected onMessageReceived(message: any): void {}
 }
