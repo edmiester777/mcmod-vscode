@@ -16,11 +16,11 @@ export default class MCModHome extends MCModUIBase {
         this._newProjectPage = null;
         this.setId('mcmod.home');
         this.setTemplate("home");
-        this.setTitle("MCMod Home");
+        this.setTitle("MCMod Crafter Home");
         this.addScript(UIHelper.mediaUri(this.context(), 'scripts', 'home.js'));
     }
 
-    protected bodyContent(): {[name: string]: any} {
+    protected bodyContent(): object {
         return {};
     }
 

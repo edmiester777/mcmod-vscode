@@ -25,7 +25,7 @@ export default class MCModNodeEditor extends MCModUIBase {
         this.addScript(UIHelper.mediaUri(this.context(), 'scripts', 'editor.js'));
     }
 
-    protected bodyContent() : {[name: string]: any} {
+    protected bodyContent() : object {
         return {};
         //return `<div id="rete" style="min-height: 100%"></div>`;
     }

@@ -114,6 +114,7 @@ export default abstract class MCModUIBase {
             vscode.ViewColumn.One,
             {
                 enableScripts: true,
+                retainContextWhenHidden: true, // doesn't clear memory when tab is unfocused.
                 localResourceRoots: this._mediaRoots // local content allowed to be loaded.
             }
         );
@@ -136,6 +137,14 @@ export default abstract class MCModUIBase {
             <title>${this._editorTitle}</title>
             <script type="text/javascript">
                 var vscode = acquireVsCodeApi();
+
+                // serialize form to normalized json
+                function serializeForm(form) {
+                    var res = {};
+                    var arr = form.serializeArray();
+                    arr.map(o => { res[o.name] = o.value; });
+                    return res;
+                }
             </script>
             ${this._styles.map(s => `<link rel="stylesheet" href="${s.with({scheme: 'vscode-resource'})}" />`).join('')}
         </head>
@@ -166,16 +175,14 @@ export default abstract class MCModUIBase {
         let opts = this.bodyContent();
 
         // replacing properties
-        for(let key in opts) {
-            if(!opts.hasOwnProperty(key)) { continue; }
-            let val = opts[key];
-            let re = new RegExp(`\\\${[\\s]{0,}${key}[\\s]{0,}}`, 'gmi');
-            text = text.replace(re, val);
-        }
+        function assemble(literal : string, opts : any) {
 
+            return new Function('return `' + literal + '`;').call(opts);
+        }
+        text = assemble(text, opts);
         return text;
     }
 
-    protected abstract bodyContent() : {[name: string]: any};
+    protected abstract bodyContent() : object;
     protected abstract onMessageReceived(message : any) : void;
 }

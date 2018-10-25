@@ -1,6 +1,6 @@
 {
-    "name": "mcmod",
-    "displayName": "mcmod",
+    "name": "mcmodcrafter",
+    "displayName": "MCMod Crafter",
     "description": "A tool to develop mods for Minecraft.",
     "version": "0.0.1",
     "publisher": "edmiester777",

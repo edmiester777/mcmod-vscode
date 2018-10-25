@@ -1,0 +1,40 @@
+<form id="detailsForm">
+    <fieldset>
+        <legend>New Project</legend>
+        <p class="text-muted">Fill out details about your new mod project below!</p>
+        <div class="form-group row">
+            <label for="projectName" class="col-sm-2 col-form-label">Name of your new project</label>
+            <div class="col-sm-10">
+                <input type="text" name="projectName" class="form-control" placeholder="Example Mod" pattern="[A-Za-z0-9 ]{1,}"
+                       value="${this.project.name || ''}" required />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="modId" class="col-sm-2 col-form-label">Mod Identifier</label>
+            <div class="col-sm-10">
+                <input type="text" name="modId" class="form-control" placeholder="example.modid" aria-describedby="projectModIdHelp"
+                       pattern="[a-z0-9.]{1,}" value="${this.project.modid || ''}" required />
+                <small id="projectModIdHelp" class="text-muted">The mod id is used by forge to identify your mod.</small>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="version" class="col-sm-2 col-form-label">Mod Version</label>
+            <div class="col-sm-10">
+                <input type="text" name="version" class="form-control" placeholder="0.0.1" pattern="[a-z0-9.\\- ]{1,}"
+                       value="${this.project.modid || ''}" required />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="mcVersion" class="col-sm-2 col-form-label">Minecraft Version</label>
+            <div class="col-sm-10">
+                <select name="mcVersion" class="form-control">
+                    <option>1.10.2</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+
+        <!-- TODO: Add further non-required fields -->
+    </fieldset>
+</form>
