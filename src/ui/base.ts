@@ -32,22 +32,17 @@ export default abstract class MCModUIBase {
         this._templateText = null;
 
         this.addRootMediaSource(UIHelper.mediaRootUri(context));
-        this.addRootMediaSource(UIHelper.moduleRootUri(context, 'bootstrap'));
-        this.addRootMediaSource(UIHelper.moduleRootUri(context, 'bootswatch'));
-        this.addRootMediaSource(UIHelper.moduleRootUri(context, 'jquery'));
-        this.addScript(UIHelper.moduleAssetUri(context, 'jquery', 'dist', 'jquery.min.js'));
-        this.addScript(UIHelper.moduleAssetUri(context, 'bootstrap', 'dist', 'js', 'bootstrap.min.js'));
-        
-        // adding style based on theme
-        const workbench = vscode.workspace.getConfiguration('workbench') || {};
-        if((workbench.colorTheme || '').toLowerCase().includes('dark')) {
-            // selecting dark theme
-            this.addStyle(UIHelper.moduleAssetUri(context, 'bootswatch', 'dist', 'darkly', 'bootstrap.min.css'));
-        }
-        else {
-            // selecting light theme
-            this.addStyle(UIHelper.moduleAssetUri(context, 'bootswatch', 'dist', 'flatly', 'bootstrap.min.css'));
-        }
+        this.addRootMediaSource(UIHelper.moduleRootUri(context, 'mdbootstrap'));
+        this.addRootMediaSource(UIHelper.moduleRootUri(context, '@fortawesome'));
+        this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'jquery-3.1.1.min.js'));
+        this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'popper.min.js'));
+        this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'bootstrap.min.js'));
+        this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'mdb.min.js'));
+
+        // styles
+        this.addStyle(UIHelper.moduleAssetUri(context, '@fortawesome', 'fontawesome-free', 'css', 'all.min.css'));
+        this.addStyle(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'css', 'bootstrap.min.css'));
+        this.addStyle(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'css', 'mdb.min.css'));
     }
 
     /**
@@ -141,6 +136,8 @@ export default abstract class MCModUIBase {
     }
 
     private webviewContent() : string {
+        const workbench = vscode.workspace.getConfiguration('workbench') || {};
+        const isDark = (workbench.colorTheme || '').toLowerCase().includes('dark')
         return `
         <!DOCTYPE HTML>
         <html lang="en">
@@ -161,7 +158,7 @@ export default abstract class MCModUIBase {
             </script>
             ${this._styles.map(s => `<link rel="stylesheet" href="${s.with({scheme: 'vscode-resource'})}" />`).join('')}
         </head>
-        <body>
+        <body class="${isDark ? 'black-skin' : ''}">
             <div class="container-fluid" style="min-height: 100vh; min-width=100vw">${this.stringContent()}</div>
             
             ${this._scripts.map(s => `<script src="${s.with({scheme: 'vscode-resource'})}"></script>`).join('')}
