@@ -21,8 +21,7 @@ export default class UIHelper {
      * @param filePath Each path component specified in order.
      */
     public static mediaUri(context: vscode.ExtensionContext, ...filePath : string[]) : vscode.Uri {
-        return vscode.Uri.file(path.join(context.extensionPath, 'media', ...filePath))
-        .with({scheme: 'vscode-resource'});
+        return vscode.Uri.file(path.join(context.extensionPath, 'media', ...filePath));
     }
 
     /**
@@ -41,7 +40,6 @@ export default class UIHelper {
      * @param assetPath Path to asset inside of the node module.
      */
     public static moduleAssetUri(context: vscode.ExtensionContext, module: string, ...assetPath: string[]) : vscode.Uri {
-        return vscode.Uri.file(path.join(context.extensionPath, 'node_modules', module, ...assetPath))
-        .with({scheme: 'vscode-resource'});
+        return vscode.Uri.file(path.join(context.extensionPath, 'node_modules', module, ...assetPath));
     }
 }

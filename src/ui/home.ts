@@ -16,6 +16,7 @@ export default class MCModHome extends MCModUIBase {
         this._newProjectPage = null;
         this.setId('mcmod.home');
         this.setTemplate("home");
+        this.setIconPath(UIHelper.mediaUri(this.context(), 'icons', 'minecraft-home-icon.png'));
         this.setTitle("MCMod Crafter Home");
         this.addScript(UIHelper.mediaUri(this.context(), 'scripts', 'home.js'));
     }

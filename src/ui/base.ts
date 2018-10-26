@@ -12,6 +12,7 @@ export default abstract class MCModUIBase {
     private _context : vscode.ExtensionContext;
     private _editorId : string;
     private _editorTitle : string;
+    private _iconPath : vscode.Uri | null;
     private _mediaRoots : vscode.Uri[];
     private _scripts : vscode.Uri[];
     private _styles : vscode.Uri[];
@@ -26,6 +27,7 @@ export default abstract class MCModUIBase {
         this._styles = [];
         this._editorId = 'mcmod.unknowntype';
         this._editorTitle = '<Unknown>';
+        this._iconPath = null;
         this._template = null;
         this._templateText = null;
 
@@ -82,6 +84,14 @@ export default abstract class MCModUIBase {
     }
 
     /**
+     * Set the icon for this editor.
+     * @param path Path to icon or null if none.
+     */
+    public setIconPath(path: vscode.Uri | null) {
+        this._iconPath = path;
+    }
+
+    /**
      * Get the extension context for this page.
      */
     public context() : vscode.ExtensionContext {
@@ -118,6 +128,9 @@ export default abstract class MCModUIBase {
                 localResourceRoots: this._mediaRoots // local content allowed to be loaded.
             }
         );
+        if(this._iconPath instanceof vscode.Uri) {
+            panel.iconPath = this._iconPath as vscode.Uri;
+        }
         panel.webview.html = this.webviewContent();
         this._currentPage = panel;
         this._currentPage.onDidDispose((e) => {
@@ -172,7 +185,13 @@ export default abstract class MCModUIBase {
 
     private stringContent() : string {
         let text = this.loadTemplate();
-        let opts = this.bodyContent();
+        let opts = this.bodyContent() as any;
+
+        // adding required opts
+        opts.context = this.context();
+        opts.media = function(...path : string[]) : vscode.Uri {
+            return UIHelper.mediaUri(this.context, ...path);
+        }
 
         // replacing properties
         function assemble(literal : string, opts : any) {
