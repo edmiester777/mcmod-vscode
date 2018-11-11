@@ -30,14 +30,18 @@ export default abstract class MCModUIBase {
         this._iconPath = null;
         this._template = null;
         this._templateText = null;
+        
+        this.setIconPath(UIHelper.mediaUri(this.context(), 'icons', 'minecraft-home-icon.png'));
 
         this.addRootMediaSource(UIHelper.mediaRootUri(context));
         this.addRootMediaSource(UIHelper.moduleRootUri(context, 'mdbootstrap'));
         this.addRootMediaSource(UIHelper.moduleRootUri(context, '@fortawesome'));
-        this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'jquery-3.1.1.min.js'));
+        this.addRootMediaSource(UIHelper.moduleRootUri(context, 'vue'));
+        this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'jquery-3.3.1.min.js'));
         this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'popper.min.js'));
         this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'bootstrap.min.js'));
         this.addScript(UIHelper.moduleAssetUri(context, 'mdbootstrap', 'js', 'mdb.min.js'));
+        this.addScript(UIHelper.moduleAssetUri(context, 'vue', 'dist', 'vue.min.js'));
 
         // styles
         this.addStyle(UIHelper.moduleAssetUri(context, '@fortawesome', 'fontawesome-free', 'css', 'all.min.css'));
@@ -137,7 +141,7 @@ export default abstract class MCModUIBase {
 
     private webviewContent() : string {
         const workbench = vscode.workspace.getConfiguration('workbench') || {};
-        const isDark = (workbench.colorTheme || '').toLowerCase().includes('dark')
+        const isDark = (workbench.colorTheme || '').toLowerCase().includes('dark');
         return `
         <!DOCTYPE HTML>
         <html lang="en">
@@ -158,10 +162,20 @@ export default abstract class MCModUIBase {
             </script>
             ${this._styles.map(s => `<link rel="stylesheet" href="${s.with({scheme: 'vscode-resource'})}" />`).join('')}
         </head>
-        <body class="${isDark ? 'black-skin' : ''}">
-            <div class="container-fluid" style="min-height: 100vh; min-width=100vw">${this.stringContent()}</div>
+        <body class="${isDark ? 'mdb-skin' : ''}">
+            <div id="appContainer" class="container-fluid" style="min-height: 100vh; min-width=100vw">${this.loadTemplate()}</div>
             
             ${this._scripts.map(s => `<script src="${s.with({scheme: 'vscode-resource'})}"></script>`).join('')}
+            
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    var app = new Vue({
+                        el: '#appContainer',
+                        data: ${JSON.stringify(this._bodyContent())}
+                    });
+                    console.log(app);
+                });
+            </script>
         </body>
         </html>
         `;
@@ -180,25 +194,13 @@ export default abstract class MCModUIBase {
         return this._templateText;
     }
 
-    private stringContent() : string {
-        let text = this.loadTemplate();
-        let opts = this.bodyContent() as any;
-
-        // adding required opts
-        opts.context = this.context();
+    private _bodyContent() : any {
+        var opts = this.bodyContent() as any;
         opts.media = function(...path : string[]) : vscode.Uri {
             return UIHelper.mediaUri(this.context, ...path);
-        }
-
-        // replacing properties
-        function assemble(literal : string, opts : any) {
-
-            return new Function('return `' + literal + '`;').call(opts);
-        }
-        text = assemble(text, opts);
-        return text;
+        };
+        return opts;
     }
-
     protected abstract bodyContent() : object;
     protected abstract onMessageReceived(message : any) : void;
 }
