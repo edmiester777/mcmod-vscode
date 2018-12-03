@@ -30,14 +30,19 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.21",
-        "tslint": "^5.8.0",
+        "@types/extract-zip": "^1.6.2",
+        "@types/fs-extra": "^5.0.4",
+        "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.21"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.4.2",
+        "download-file": "^0.1.5",
+        "extract-zip": "^1.6.7",
+        "fs-extra": "^7.0.1",
         "mdbootstrap": "^4.5.13",
         "rete": "^1.0.0-alpha.12",
         "rete-area-plugin": "^0.2.0",

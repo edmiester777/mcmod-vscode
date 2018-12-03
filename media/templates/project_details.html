@@ -1,40 +1,82 @@
-<form id="detailsForm">
-    <fieldset>
-        <legend>New Project</legend>
-        <p class="text-muted">Fill out details about your new mod project below!</p>
-        <div class="form-group row">
-            <label for="projectName" class="col-sm-2 col-form-label">Name of your new project</label>
-            <div class="col-sm-10">
-                <input type="text" name="projectName" class="form-control" placeholder="Example Mod" pattern="[A-Za-z0-9 ]{1,}"
-                       value="${this.project.name || ''}" required />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="modId" class="col-sm-2 col-form-label">Mod Identifier</label>
-            <div class="col-sm-10">
-                <input type="text" name="modId" class="form-control" placeholder="example.modid" aria-describedby="projectModIdHelp"
-                       pattern="[a-z0-9.]{1,}" value="${this.project.modid || ''}" required />
-                <small id="projectModIdHelp" class="text-muted">The mod id is used by forge to identify your mod.</small>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="version" class="col-sm-2 col-form-label">Mod Version</label>
-            <div class="col-sm-10">
-                <input type="text" name="version" class="form-control" placeholder="0.0.1" pattern="[a-z0-9.\\- ]{1,}"
-                       value="${this.project.modid || ''}" required />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="mcVersion" class="col-sm-2 col-form-label">Minecraft Version</label>
-            <div class="col-sm-10">
-                <select name="mcVersion" class="form-control">
-                    <option>1.10.2</option>
-                </select>
-            </div>
-        </div>
+<div id="createProjectWizard">
+    <ul>
+        <li>
+            <a href="#step-1">
+                Project Details<br />
+                <small>Tell us a little about this.</small>
+            </a>
+        </li>
+        <li>
+            <a href="#step-2">
+                Creating<br />
+                <small>Setting up project.</small>
+            </a>
+        </li>
+        <li>
+            <a href="#step-3">
+                Done<br />
+                <small>Setup Complete</small>
+            </a>
+        </li>
+    </ul>
 
-        <button type="submit" class="btn btn-primary">Save</button>
-
-        <!-- TODO: Add further non-required fields -->
-    </fieldset>
-</form>
+    <div>
+        <div id="step-1" class="">
+            <form id="detailsForm" class="needs-validation">
+                <fieldset>
+                    <legend>New Project</legend>
+                    <p class="text-muted">Fill out details about your new mod project below!</p>
+                    <div class="form-group">
+                        <div class="md-form">
+                            <input type="text" name="name" class="form-control form-control-md" pattern="[A-Za-z0-9 ]{1,}"
+                                   v-model.trim="project.name" required />
+                            <label for="projectName">
+                                Name of your new project
+                            </label>
+                            <div class="invalid-feedback">
+                                Invalid name. Use only alphanumeric letters and spaces.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="md-form">
+                            <input type="text" name="modId" class="form-control" pattern="[a-z0-9.]{1,}" v-model.trim="project.modid"
+                                   required />
+                            <label for="modId">Mod Identifier</label>
+                            <div class="invalid-feedback">
+                                Invalid mod identifier. Use lowercase letters, numbers, and no spaces.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="md-form">
+                            <input type="text" name="version" class="form-control" pattern="[a-z0-9. ]{1,}"
+                                   v-model.trim="project.version" required />
+                            <label for="version">Mod Identifier</label>
+                            <div class="invalid-feedback">
+                                Invalid mod version. Alphanumeric (ex: 1.0-Alpha)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mcVersion">Minecraft Version</label>
+                        <select name="mcVersion" class="form-control">
+                            <option v-for="(version, index) in env.forge.supportedVersions" :value="index">
+                                MC {{version.minecraftVersion}} - Forge {{version.forgeVersion}}
+                            </option>
+                        </select>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="step-2" class="">
+            <div>
+                <p class="text-center">Setting up... This may take a minute.</p>
+                <loader />
+            </div>
+        </div>
+        <div id="step-3" class="">
+            You are done!
+        </div>
+    </div>
+</div>
